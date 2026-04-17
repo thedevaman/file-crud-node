@@ -5,13 +5,19 @@ const path = require('path')
 const server = http.createServer((req,res)=>{
     const method = req.method
     const root = __dirname
-    const location = path.join(root,"files",sample.txt)
+    const location = path.join(root,"files","sample.txt")
 
     if(method === "POST")
     {
+      const isFile = fs.existsSync(location)
+      if(!isFile)  
+      {
       fs.writeFileSync(location,'hrllo')
       res.writeHead(200,{'content-type':'text/plain'})
       res.end("success")
+      }else{
+        res.end("file already exist")
+      }
     }
 
     else if(method === "GET")
@@ -42,6 +48,5 @@ const server = http.createServer((req,res)=>{
 
    
     console.log(method)
-res.end("data")
 })
 server.listen(8080)
